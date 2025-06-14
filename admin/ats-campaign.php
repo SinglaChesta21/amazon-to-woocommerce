@@ -2,6 +2,16 @@
 if (!defined('ABSPATH')) exit;
 
 function ats_render_campaign_import_page() {
+    if (!wp_next_scheduled('ats_campaigns_cron')) {
+    echo "<div class='notice notice-error'><p>❌ Campaign cron is NOT scheduled.</p></div>";
+} else {
+    echo "<div class='notice notice-success'><p>✅ Campaign cron is scheduled.</p></div>";
+}
+
+    if (!current_user_can('manage_options')) {
+        wp_die('You do not have permission to access this page.');
+    }
+
     $categories = [
         'aps' => 'All Categories',
         'alexaskills' => 'Alexa Skills',
@@ -43,10 +53,9 @@ function ats_render_campaign_import_page() {
         'toysandgames' => 'Toys & Games',
         'videogames' => 'Video Games',
         'watches' => 'Watches'
-
     ];
 
-    // Handle actions
+    // Handle actions with validation
     if (isset($_GET['stop_campaign'])) {
         $index = intval($_GET['stop_campaign']);
         $campaigns = get_option('ats_campaigns', []);
@@ -85,14 +94,14 @@ function ats_render_campaign_import_page() {
         echo "<div class='notice notice-info'><p>🧹 Logs cleared for campaign #$index.</p></div>";
     }
 
-    // Handle form submit
-    if (!empty($_POST['ats_campaign_submit'])) {
+    // Handle form submission securely
+    if (!empty($_POST['ats_campaign_submit']) && isset($_POST['ats_campaign_nonce']) && wp_verify_nonce($_POST['ats_campaign_nonce'], 'ats_campaign_create')) {
         $campaigns = get_option('ats_campaigns', []);
         $campaigns[] = [
             'name'     => sanitize_text_field($_POST['ats_campaign_name']),
             'keyword'  => sanitize_text_field($_POST['ats_keyword']),
             'category' => sanitize_text_field($_POST['ats_category']),
-            'rate'     => (int) $_POST['ats_rate'],
+            'rate'     => min(max((int) $_POST['ats_rate'], 1), 10),
             'active'   => true,
             'created'  => current_time('mysql')
         ];
@@ -134,6 +143,7 @@ function ats_render_campaign_import_page() {
                     </td>
                 </tr>
             </table>
+            <?php wp_nonce_field('ats_campaign_create', 'ats_campaign_nonce'); ?>
             <input type="hidden" name="ats_campaign_submit" value="1">
             <?php submit_button('Start Campaign'); ?>
         </form>
@@ -183,7 +193,6 @@ function ats_render_campaign_import_page() {
                 echo "<p>No logs yet.</p>";
             }
         }
-
         ?>
     </div>
     <?php
