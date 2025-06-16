@@ -6,12 +6,11 @@ function ats_fetch_amazon_product($asin, $country) {
     $asin = sanitize_text_field($asin);
     $country = sanitize_key($country);
 
-    // ✅ Validate ASIN format
-    if (!preg_match('/^B0[A-Z0-9]{8}$/', $asin)) {
-        echo "<p style='color:red;'>❌ Invalid ASIN format: $asin</p>";
-        return false;
-    }
-
+// ✅ Allow ASINs like B07PB95KBR, B08J, B0C etc.
+if (!preg_match('/^[A-Z0-9]{10}$/i', $asin)) {
+    echo "<p style='color:red;'>❌ Invalid ASIN format: $asin</p>";
+    return false;
+}
     $api_key = '90268f5fcbdd46de8d88db4489589048';
     $amazon_url = "https://www.amazon.$country/dp/$asin";
     $scraper_url = "http://api.scraperapi.com?api_key=$api_key&render=true&country_code=$country&url=" . urlencode($amazon_url);
@@ -37,10 +36,10 @@ function ats_fetch_amazon_product($asin, $country) {
         $title = trim($match[1]);
     }
 
-    // ✅ Extract Price
-    if (preg_match('/<span class="a-offscreen">₹?([\d,.]+)<\/span>/', $html, $pm)) {
-        $price = floatval(str_replace(',', '', $pm[1]));
-    }
+if (preg_match('/<span[^>]*class="a-offscreen"[^>]*>\s*([^\d\s<]*[\d,.]+)\s*<\/span>/i', $html, $pm)) {
+    $currency_price = trim($pm[1]);
+    $price = floatval(str_replace([',', '₹', '$', '€', '£', '¥', ' '], '', $currency_price));
+}
 
     // ✅ Extract Description
     if (preg_match('/<div id="feature-bullets"[^>]*>(.*?)<\/div>/s', $html, $descMatch)) {
