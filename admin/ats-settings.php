@@ -1,6 +1,8 @@
 <?php
 if (!defined('ABSPATH')) exit;
-
+echo '<h2>Settings Loaded</h2>';
+echo '<p>Your affiliate settings will be here.</p>';
+ats_render_settings_page();
 function ats_render_settings_page() {
     $available_countries = [
         'in' => 'India (.in)',
@@ -101,3 +103,12 @@ function ats_render_settings_page() {
     </div>
     <?php
 }
+// Register Amazon API Integration Settings
+function ats_register_amazon_api_settings() {
+    register_setting('ats_amazon_api_integration', 'ats_use_amazon_api');
+    register_setting('ats_amazon_api_integration', 'ats_amazon_access_key');
+    register_setting('ats_amazon_api_integration', 'ats_amazon_secret_key');
+    register_setting('ats_amazon_api_integration', 'ats_amazon_associate_tag');
+}
+add_action('admin_init', 'ats_register_amazon_api_settings');
+
