@@ -26,7 +26,7 @@ function ats_render_asin_import_page() {
     ?>
     <div class="wrap">
         <h1>📦 Import Amazon Product by ASIN</h1>
-        <form method="post">
+        <form method="post" class="ats-import-form">
             <table class="form-table">
                 <tr>
                     <th scope="row">Enter ASIN</th>
@@ -62,7 +62,7 @@ function ats_render_asin_import_page() {
             </table>
             <?php
             wp_nonce_field('ats_asin_import_nonce', 'ats_asin_import_nonce_field');
-            submit_button('Import Product');
+submit_button('Import Product', 'primary ats-import-btn');
             ?>
         </form>
 
@@ -95,5 +95,29 @@ function ats_render_asin_import_page() {
         }
         ?>
     </div>
+    <style>
+
+        .ats-import-form th{
+            font-family: "Segoe UI", sans-serif;
+            font-size:18px;
+            font-weight: 400;
+
+
+        }
+        .ats-import-btn {
+            background-color: #2e8ba6 !important;
+            border-color: #2e8ba6 !important;
+            color: white !important;
+            padding: 5px 10px !important;
+            border-radius: 5px !important;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+        }
+
+    </style>
+
     <?php
 }
+
+

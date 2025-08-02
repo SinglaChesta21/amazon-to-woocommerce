@@ -26,9 +26,10 @@ $last_synced_diff = $last_synced_time ? human_time_diff($last_synced_time, curre
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     flex: 1;
     transition: 0.3s ease;
+    border: 1px solid #e0e0e0;
 }
 .dashboard-card:hover {
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
@@ -81,6 +82,8 @@ $last_synced_diff = $last_synced_time ? human_time_diff($last_synced_time, curre
     padding: 10px;
     text-align: center;
     transition: 0.3s ease;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .product-card:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.06);

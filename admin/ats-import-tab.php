@@ -14,7 +14,7 @@
         border-radius: 12px;
         text-align: center;
         padding: 30px 20px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         transition: 0.3s ease;
     }
     .ats-import-card:hover {
