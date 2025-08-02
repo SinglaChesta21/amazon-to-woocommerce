@@ -1,5 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
+ats_render_campaign_import_page();
 
 function ats_render_campaign_import_page() {
     if (!wp_next_scheduled('ats_campaigns_cron')) {
@@ -13,46 +14,57 @@ function ats_render_campaign_import_page() {
     }
 
     $categories = [
-        'aps' => 'All Categories',
-        'alexaskills' => 'Alexa Skills',
-        'amazondevices' => 'Amazon Devices',
-        'amazonfashion' => 'Amazon Fashion',
-        'amazonfresh' => 'Amazon Fresh',
-        'amazonpharmacy' => 'Amazon Pharmacy',
-        'appliances' => 'Appliances',
-        'appsandgames' => 'Apps & Games',
-        'audiobooks' => 'Audible Audiobooks',
-        'baby' => 'Baby',
-        'beauty' => 'Beauty',
-        'books' => 'Books',
-        'carandmotorbike' => 'Car & Motorbike',
-        'clothindandaccesories' => 'Clothing & Accessories',
-        'collectibles' => 'Collectibles',
-        'computersandaccesories' => 'Computers & Accessories',
-        'deals' => 'Deals',
-        'electronics' => 'Electronics',
-        'furniture' => 'Furniture',
-        'gardenandoutdoor' => 'Garden & Outdoor',
-        'giftcards' => 'Gift Cards',
-        'groceryandgourmetfood' => 'Grocery & Gourmet Food',
-        'healthandpersonalcare' => 'Health & Personal Care',
-        'homeandkitchen' => 'Home & Kitchen',
-        'industrialandscientific' => 'Industrial & Scientific',
-        'jewelry' => 'Jewelry',
-        'kindlestore' => 'Kindle Store',
-        'luggageandbags' => 'Luggage & Bags',
-        'luxurybeauty' => 'Luxury Beauty',
-        'moviesandtv' => 'Movies & TV Shows',
-        'musicalinstruments' => 'Musical Instruments',
-        'officeproducts' => 'Office Products',
-        'petssupplies' => 'Pet Supplies',
-        'shoesandhandbags' => 'Shoes & Handbags',
-        'software' => 'Software',
-        'sportsfitnessandoutdoors' => 'Sports, Fitness & Outdoors',
-        'toolsandhomeimprovement' => 'Tools & Home Improvement',
-        'toysandgames' => 'Toys & Games',
-        'videogames' => 'Video Games',
-        'watches' => 'Watches'
+        'All' => 'All Departments',
+        'AmazonVideo' => 'Prime Video',
+        'Apparel' => 'Clothing & Accessories',
+        'Appliances' => 'Appliances',
+        'ArtsAndCrafts' => 'Arts, Crafts & Sewing',
+        'Automotive' => 'Automotive Parts & Accessories',
+        'Baby' => 'Baby',
+        'Beauty' => 'Beauty & Personal Care',
+        'Books' => 'Books',
+        'Classical' => 'Classical',
+        'Collectibles' => 'Collectibles & Fine Art',
+        'Computers' => 'Computers',
+        'DigitalMusic' => 'Digital Music',
+        'DigitalEducationalResources' => 'Digital Educational Resources',
+        'Electronics' => 'Electronics',
+        'EverythingElse' => 'Everything Else',
+        'Fashion' => 'Clothing, Shoes & Jewelry',
+        'FashionBaby' => 'Clothing, Shoes & Jewelry Baby',
+        'FashionBoys' => 'Clothing, Shoes & Jewelry Boys',
+        'FashionGirls' => 'Clothing, Shoes & Jewelry Girls',
+        'FashionMen' => 'Clothing, Shoes & Jewelry Men',
+        'FashionWomen' => 'Clothing, Shoes & Jewelry Women',
+        'GardenAndOutdoor' => 'Garden & Outdoor',
+        'GiftCards' => 'Gift Cards',
+        'GroceryAndGourmetFood' => 'Grocery & Gourmet Food',
+        'Handmade' => 'Handmade',
+        'HealthPersonalCare' => 'Health, Household & Baby Care',
+        'HomeAndKitchen' => 'Home & Kitchen',
+        'Industrial' => 'Industrial & Scientific',
+        'Jewelry' => 'Jewelry',
+        'KindleStore' => 'Kindle Store',
+        'LocalServices' => 'Home & Business Services',
+        'Luggage' => 'Luggage & Travel Gear',
+        'LuxuryBeauty' => 'Luxury Beauty',
+        'Magazines' => 'Magazine Subscriptions',
+        'MobileAndAccessories' => 'Cell Phones & Accessories',
+        'MobileApps' => 'Apps & Games',
+        'MoviesAndTV' => 'Movies & TV',
+        'Music' => 'CDs & Vinyl',
+        'MusicalInstruments' => 'Musical Instruments',
+        'OfficeProducts' => 'Office Products',
+        'PetSupplies' => 'Pet Supplies',
+        'Photo' => 'Camera & Photo',
+        'Shoes' => 'Shoes',
+        'Software' => 'Software',
+        'SportsAndOutdoors' => 'Sports & Outdoors',
+        'ToolsAndHomeImprovement' => 'Tools & Home Improvement',
+        'ToysAndGames' => 'Toys & Games',
+        'VHS' => 'VHS',
+        'VideoGames' => 'Video Games',
+        'Watches' => 'Watches'
     ];
 
     // Handle actions with validation
@@ -101,6 +113,7 @@ function ats_render_campaign_import_page() {
             'name'     => sanitize_text_field($_POST['ats_campaign_name']),
             'keyword'  => sanitize_text_field($_POST['ats_keyword']),
             'category' => sanitize_text_field($_POST['ats_category']),
+            'wc_category' => intval($_POST['ats_wc_category']),
             'rate'     => min(max((int) $_POST['ats_rate'], 1), 10),
             'active'   => true,
             'created'  => current_time('mysql')
@@ -142,6 +155,24 @@ function ats_render_campaign_import_page() {
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <th>WooCommerce Category</th>
+                    <td>
+                        <select name="ats_wc_category" required>
+                            <option value="">Select WooCommerce Category</option>
+                            <?php
+                            $wc_categories = get_terms([
+                                'taxonomy' => 'product_cat',
+                                'hide_empty' => false,
+                            ]);
+                            foreach ($wc_categories as $wc_cat) {
+                                echo '<option value="' . esc_attr($wc_cat->term_id) . '">' . esc_html($wc_cat->name) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+
             </table>
             <?php wp_nonce_field('ats_campaign_create', 'ats_campaign_nonce'); ?>
             <input type="hidden" name="ats_campaign_submit" value="1">
@@ -163,13 +194,13 @@ function ats_render_campaign_import_page() {
                 echo "<td>" . ($c['active'] ? "<span style='color:green;'>Running</span>" : "<span style='color:red;'>Stopped</span>") . "</td>";
                 echo "<td>";
                 if ($c['active']) {
-                    echo "<a href='?page=ats-campaign-import&stop_campaign=$index' class='button'>⏹ Stop</a> ";
+                    echo "<a href='?page=amazon-sync&tab=import&method=campaign&stop_campaign=$index' class='button'>⏹ Stop</a> ";
                 } else {
-                    echo "<a href='?page=ats-campaign-import&start_campaign=$index' class='button button-primary'>▶ Start</a> ";
+                    echo "<a href='?page=amazon-sync&tab=import&method=campaign&start_campaign=$index' class='button button-primary'>▶ Start</a> ";
                 }
-                echo "<a href='?page=ats-campaign-import&view_log=$index' class='button'>📄 Log</a> ";
-                echo "<a href='?page=ats-campaign-import&clear_log=$index' class='button'>🧹 Clear Log</a> ";
-                echo "<a href='?page=ats-campaign-import&delete_campaign=$index' class='button' onclick='return confirm(\"Are you sure?\")'>🗑 Delete</a>";
+                echo "<a href='?page=amazon-sync&tab=import&method=campaign&view_log=$index' class='button'>📄 Log</a> ";
+                echo "<a href='?page=amazon-sync&tab=import&method=campaign&clear_log=$index' class='button'>🧹 Clear Log</a> ";
+                echo "<a href='?page=amazon-sync&tab=import&method=campaign&delete_campaign=$index' class='button' onclick='return confirm(\"Are you sure?\")'>🗑 Delete</a>";
                 echo "</td></tr>";
             }
             echo "</tbody></table>";
@@ -197,3 +228,12 @@ function ats_render_campaign_import_page() {
     </div>
     <?php
 }
+
+// Trigger campaigns via URL
+add_action('init', function () {
+    if (isset($_GET['run_cron']) && $_GET['run_cron'] === '1') {
+        ats_run_campaigns_cron_job();
+        echo 'Cron job manually triggered.';
+        exit;
+    }
+});
