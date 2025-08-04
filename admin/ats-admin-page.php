@@ -17,7 +17,7 @@ function ats_render_admin_panel() {
 
     // Load respective files
     $base = plugin_dir_path(__FILE__);
-
+ echo '<div class="ats-tab-content">';
     switch ($active_tab) {
         case 'dashboard':
             include $base . 'ats-dashboard.php';
@@ -47,6 +47,57 @@ function ats_render_admin_panel() {
             include $base . 'ats-amazon-api-integration.php'; // We'll create this new file next
             break;    
     }
+    echo '</div>';
 
     echo '</div>';
 }
+?>
+<style>
+    
+    .wrap {
+        margin-top: 20px;
+    }
+
+    .nav-tab-wrapper {
+        padding: 0;
+        margin: 0;
+        border-bottom: none;
+    }
+
+    .nav-tab {
+        border-radius: 6px 6px 0px 0px;
+        padding: 10px 20px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        background-color: #f0f0f0 !important;  /* Inactive tab */
+        color: #2E8BA6 !important;
+        border: 1px solid #ddd;
+        border-bottom: none !important;
+        margin-right: 2px;
+        margin-left: 0 !important;
+    }
+
+    .nav-tab-active {
+        background-color: white !important;
+        border: 1px solid #ddd;
+        border-bottom: none !important;
+        position: relative;
+        z-index: 2;
+    }
+
+    .ats-tab-content {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        margin-top: -1px;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Optional: Remove unwanted whitespace around everything */
+    .wrap > h1 {
+        margin-bottom: 0.5rem;
+    }
+</style>

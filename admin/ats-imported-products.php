@@ -6,14 +6,18 @@ ats_render_imported_products_page();
 
 function ats_render_imported_products_page() {
     echo '<div class="wrap">';
-    echo '<h1><i class="fas fa-boxes"></i> Imported Products</h1>';
+    echo '<h1 style="font-size: 26px; font-weight: 600;margin-bottom: 20px;"><i class="fas fa-boxes"></i> Imported Products</h1>';
 
     // Update price button
-    if (isset($_POST['ats_update_prices'])) {
-        ats_bulk_price_update();
-        echo '<div class="notice notice-success is-dismissible"><p>✅ Prices updated successfully.</p></div>';
+if (isset($_POST['ats_update_prices'])) {
+    $result = ats_bulk_price_update();
+    if ($result['updated'] > 0) {
+        echo '<div class="notice notice-success is-dismissible"><p>✅ Updated ' . $result['updated'] . ' products.</p></div>';
     }
-
+    if (!empty($result['errors'])) {
+        echo '<div class="notice notice-error is-dismissible"><p>❌ ' . count($result['errors']) . ' errors occurred during update.</p></div>';
+    }
+}
     // Clear logs
     if (isset($_POST['ats_clear_logs'])) {
         delete_option('ats_imported_products_log');
@@ -37,20 +41,103 @@ function ats_render_imported_products_page() {
         return;
     }
 
-    echo '<style>
-        .ats-products-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
-        .ats-products-table th, .ats-products-table td { border: 1px solid #ddd; padding: 10px; vertical-align: middle; }
-        .ats-products-table th { background-color: #f8f9fa; text-align: left; }
-        .ats-products-table img { width: 60px; height: auto; border-radius: 5px; }
-        .ats-action-btns a { margin-right: 8px; text-decoration: none; }
-        .ats-action-btns i { font-size: 15px; color: #444; transition: 0.3s; }
-        .ats-action-btns i:hover { color: #0073aa; }
-        .ats-status-published { color: green; font-weight: bold; }
-        .ats-status-draft { color: orange; font-weight: bold; }
-        .ats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .ats-header .total-count { font-size: 16px; font-weight: bold; }
-        .ats-search-box input { padding: 6px; width: 250px; }
-    </style>';
+echo '<style>
+
+
+
+
+    .ats-products-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+        font-family: "Golos Text", sans-serif;
+    }
+    .ats-products-table th,
+    .ats-products-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        vertical-align: middle;
+    }
+    .ats-products-table th {
+        background-color: #f2f5f7;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+    }
+    .ats-products-table img {
+        width: 60px;
+        height: auto;
+        border-radius: 5px;
+        background: #fafafa;
+    }
+    .ats-action-btns a {
+        margin-right: 10px;
+        text-decoration: none;
+    }
+    .ats-action-btns i {
+        font-size: 15px;
+        color: #555;
+        transition: color 0.2s ease;
+    }
+    .ats-action-btns i:hover {
+        color: #2E8BA6;
+    }
+    .ats-status-published {
+        color: green;
+        font-weight: 600;
+    }
+    .ats-status-draft {
+        color: orange;
+        font-weight: 600;
+    }
+    .ats-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 0 10px;
+        font-family: "Golos Text", sans-serif;
+    }
+    .ats-header .total-count {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+    .ats-search-box input {
+        padding: 7px 12px;
+        width: 250px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-family: "Golos Text", sans-serif;
+    }
+.wrap form input.button {
+    font-family: "Golos Text", sans-serif !important;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: none;
+}
+.wrap input.button.button-primary {
+    background-color: #2E8BA6;
+    color: #fff;
+    border: 1px solid #2E8BA6;
+}
+.wrap input.button.button-primary:hover {
+    background-color: #256f88;
+}
+.wrap input.button.button-secondary {
+    background-color: #fff;
+    color: #2E8BA6;
+    border: 1px solid #2E8BA6;
+}
+.wrap input.button.button-secondary:hover {
+    background-color: #f1f9fb;
+}
+</style>';
 
     echo '<div class="ats-header">';
     echo '<div class="total-count">Total Products: ' . count($logs) . '</div>';
