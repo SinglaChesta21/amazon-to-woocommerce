@@ -124,7 +124,7 @@ function ats_render_campaign_import_page() {
 
     ?>
     <div class="wrap">
-        <h1>Create Campaign</h1>
+        <h1  style="font-size: 26px; font-weight: 600;margin-bottom: 20px;">Create Campaign</h1>
         <form method="post">
             <table class="form-table">
                 <tr>
@@ -237,3 +237,69 @@ add_action('init', function () {
         exit;
     }
 });
+
+?>
+<style>
+    /* General label styling */
+.form-table th{
+    font-weight: 500;
+    color: #333;
+    font-family: "Golos Text", sans-serif;
+    font-size: 16px;
+
+}
+
+
+    /* Input fields (text + select) styling */
+.wrap input[type="text"],
+.wrap select {
+    font-family: "Golos Text", sans-serif !important;
+    font-size: 14px;
+    padding: 3px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    width: 300px;
+    max-width: 100%;
+    height: 40px;
+}
+
+/* Match button height with input */
+    .wrap form input.button {
+    font-family: "Golos Text", sans-serif !important;
+    font-weight: 600;
+    font-size: 14px;
+    height: 40px;
+    line-height: 1;
+    padding: 0px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.wrap input.button-primary {
+    background-color: #2E8BA6;
+    color: #fff;
+    border: 1px solid #2E8BA6;
+}
+.wrap input.button-primary:hover {
+    background-color: #256f88;
+}
+
+.wrap input.button-secondary {
+    background-color: #fff;
+    color: #2E8BA6;
+    border: 1px solid #2E8BA6;
+}
+.wrap input.button-secondary:hover {
+    background-color: #f1f9fb;
+}
+
+
+</style>
+
+

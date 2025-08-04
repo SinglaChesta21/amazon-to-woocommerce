@@ -48,5 +48,26 @@ function ats_enqueue_fontawesome() {
     wp_enqueue_script('font-awesome-kit', 'https://kit.fontawesome.com/ee7f5a487f.js', [], null, false);
 }
 
+add_action('admin_enqueue_scripts', 'ats_enqueue_google_fonts_for_plugin');
+
+function ats_enqueue_google_fonts_for_plugin($hook) {
+    if ($hook !== 'toplevel_page_amazon-sync') {
+        return;
+    }
+
+    // Load Google Fonts only for this plugin admin page
+    wp_enqueue_style('golos-text-font', 'https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap', false);
+
+    wp_add_inline_style('golos-text-font', "
+        body, input, select, textarea, button, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Golos Text', sans-serif !important;
+        }
+    ");
+}
+
+
+
+
+
 
 

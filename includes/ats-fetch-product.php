@@ -63,7 +63,6 @@ function ats_fetch_amazon_product($asin, $country, $assign_category_id = 0) {
         }
         $html = ats_get_remote_content($scraper_url);
         error_log("Scraper HTML for ASIN $asin: " . ($html ? substr($html, 0, 500) : 'Empty'));
-        file_put_contents(__DIR__ . '/debug_amazon_html_' . $asin . '.html', $html ?: 'Empty response');
 
         if (!$html || strpos($html, '<html') === false || strpos($html, 'amazon') === false || 
             strpos($html, 'Enter the characters you see below') !== false || 

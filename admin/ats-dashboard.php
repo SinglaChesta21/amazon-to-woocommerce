@@ -19,6 +19,76 @@ $last_synced_diff = $last_synced_time ? human_time_diff($last_synced_time, curre
 ?>
 
 <style>
+    body, input, select, textarea, button {
+    font-family: 'Golos Text', sans-serif !important;
+}
+/* Page Title */
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+/* Section Headings */
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Table Headings */
+.form-table th {
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 10px;
+}
+
+/* Table Data */
+.form-table td {
+    padding: 12px 10px;
+}
+
+/* Input Fields */
+.form-table input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Checkbox */
+.form-table input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 8px;
+}
+
+/* Label Text */
+.form-table label {
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+/* Primary Button */
+.button-primary {
+    background-color: #2e8ba6; /* Your theme color */
+    border-color: #2e8ba6;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+/* Notification Box */
+.updated.notice {
+    border-left-color: #46b450;
+}
+.updated.notice p {
+    font-weight: 500;
+}
 .dashboard-card {
     background: #fff;
     border-radius: 12px;
